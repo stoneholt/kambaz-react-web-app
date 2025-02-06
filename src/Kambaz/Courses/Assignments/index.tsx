@@ -4,6 +4,7 @@ import AssignmentHeader from "./AssignmentHeader";
 import { ListGroup } from "react-bootstrap";
 import { BsGripVertical } from "react-icons/bs";
 import { LuNotebookPen } from "react-icons/lu";
+import { FaCaretDown } from "react-icons/fa";
 export default function Assignments() {
     return (
       <div id="wd-assignments">
@@ -11,7 +12,7 @@ export default function Assignments() {
         <br></br>
         <ListGroup className="rounded-0" id="wd-assignment-grouping">
           <ListGroup.Item className="wd-module p-0 mb-5 fs-5 border-gray">
-            <div className="wd-title p-3 ps-2 bg-secondary"> <BsGripVertical className="me-2 fs-3" /> ASSIGNMENTS <AssignmentHeader /> </div>
+            <div className="wd-title p-3 ps-2 bg-secondary"> <BsGripVertical className="me-2 fs-3" /> <FaCaretDown /> ASSIGNMENTS <AssignmentHeader /> </div>
             <ListGroup className="wd-assignments rounded-0 d-flex align-items-center">
               <ListGroup.Item action href="#/Kambaz/Courses/1234/Assignments/1" className="wd-assignment p-3 ps-1 d-flex align-items-center">
                 <BsGripVertical className="me-2 fs-3" /> <LuNotebookPen style={{ color: "green" }}/> 
