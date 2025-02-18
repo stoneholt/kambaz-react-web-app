@@ -67,7 +67,7 @@ export default function AssignmentEditor() {
                 <Form.Label htmlFor="wd-available-until"><b>Until</b></Form.Label>
               </Form.Group>
               <Form.Group className="d-flex align-items-center">
-                <Form.Control type="date" style={{ width: 150 }} id="wd-available-from" value={assignment?.available} />
+                <Form.Control type="date" style={{ width: 150 }} id="wd-available-from" defaultValue={assignment?.available} />
                 <Form.Control type="date" style={{ width: 150 }} id="wd-available-until" />
               </Form.Group>
             </Form.Group>
