@@ -6,15 +6,11 @@ import { BsGripVertical } from "react-icons/bs";
 import { LuNotebookPen } from "react-icons/lu";
 import { FaCaretDown } from "react-icons/fa";
 import { useParams } from "react-router";
-import * as db from "../../Database";
-import { addAssignment, editAssignment, updateAssignment, deleteAssignment }
-  from "./reducer";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function Assignments() {
     const { cid } = useParams();
     const { assignments } = useSelector((state: any) => state.assignmentsReducer);
-    const dispatch = useDispatch();
     return (
       <div id="wd-assignments">
         <AssignmentControls />

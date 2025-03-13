@@ -10,6 +10,7 @@ export default function AssignmentEditor()  {
     const dispatch = useDispatch();
     
     const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+    
     const [assignment, setAssignment] = useState({
       title: "New Assignment123",
       description: "New Assignment Description",
@@ -26,17 +27,25 @@ export default function AssignmentEditor()  {
         dispatch(updateAssignment(assignment));
       }
     }
+
+    const update_values = (e: any) => {
+      const { field, value } = e.target;
+      setAssignment(prevState => ({
+        ...prevState,
+        [field]: value
+      }))
+    }
     
     useEffect(() => {
       if (aid !== "New") {
         const a = assignments.find((a: any) => a._id === aid);
-        setAssignment(a)
+        setAssignment(a);
       }
     })
     return (
       <Form id="wd-assignments-editor">
         <label htmlFor="wd-name"><h5>Assignment Name</h5></label>
-        <Form.Control style={{ width: 600 }} id="wd-name" className="mb-2" value={assignment.title} />
+        <Form.Control style={{ width: 600 }} id="wd-name" className="mb-2" value={assignment.title} onChange={update_values}/>
         <Form.Control style={{ width: 600, height: 400 }} as="textarea" id="wd-description" defaultValue="The assignment is available online Submit a link to the landing page of your Web application running on Netlify. The landing page should include the following: Your full name and section Links to each of the lab assignments Link to the Kambas application Links to all relevant source code repositories The Kambas application should include a link to navigate back to the landing page" value={assignment?.description} />
         <br/>
         <Form.Group className="d-flex align-items-center">

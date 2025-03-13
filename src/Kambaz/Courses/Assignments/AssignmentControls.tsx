@@ -1,17 +1,8 @@
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import { useState } from "react";
-import AssignmentEditor from "./Editor";
 import { useParams } from "react-router";
-import { v4 as uuidv4 } from "uuid";
-export default function AssignmentControls ()
-    // { assignmentTitle, setAssignmentTitle, addAssignment }:
-    // { assignmentTitle: string, setAssignmentTitle: (title: string) => void; addAssignment: () => void; }) 
-    {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+export default function AssignmentControls() {
     const { cid } = useParams();
     return (
         <div id="wd-assignment-controls" className="text-nowrap d-flex align-items-center gap-4">
