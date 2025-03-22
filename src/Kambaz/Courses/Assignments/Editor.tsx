@@ -1,15 +1,51 @@
 import { Button, Form } from "react-bootstrap";
 import { useParams } from "react-router";
-import * as db from "../../Database";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { addAssignment, updateAssignment } from "./reducer";
 
-export default function AssignmentEditor() {
+export default function AssignmentEditor()  {
     const { cid } = useParams();
     const { aid } = useParams();
-    const assignment = db.assignments.find((assignment) => assignment._id === aid);
+    const dispatch = useDispatch();
+    
+    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+    
+    const [assignment, setAssignment] = useState({
+      title: "New Assignment123",
+      description: "New Assignment Description",
+      points: 100,
+      due: "2020-01-01",
+      available: "2020-01-01",
+      course: cid,
+    });
+
+    const save = () => {
+      if (aid === "New") {
+        dispatch(addAssignment(assignment));
+      } else {
+        dispatch(updateAssignment(assignment));
+      }
+    }
+
+    const update_values = (e: any) => {
+      const { field, value } = e.target;
+      setAssignment(prevState => ({
+        ...prevState,
+        [field]: value
+      }))
+    }
+    
+    useEffect(() => {
+      if (aid !== "New") {
+        const a = assignments.find((a: any) => a._id === aid);
+        setAssignment(a);
+      }
+    })
     return (
       <Form id="wd-assignments-editor">
         <label htmlFor="wd-name"><h5>Assignment Name</h5></label>
-        <Form.Control style={{ width: 600 }} id="wd-name" defaultValue="A1" className="mb-2" value={assignment?.title} />
+        <Form.Control style={{ width: 600 }} id="wd-name" className="mb-2" value={assignment.title} onChange={update_values}/>
         <Form.Control style={{ width: 600, height: 400 }} as="textarea" id="wd-description" defaultValue="The assignment is available online Submit a link to the landing page of your Web application running on Netlify. The landing page should include the following: Your full name and section Links to each of the lab assignments Link to the Kambas application Links to all relevant source code repositories The Kambas application should include a link to navigate back to the landing page" value={assignment?.description} />
         <br/>
         <Form.Group className="d-flex align-items-center">
@@ -76,7 +112,7 @@ export default function AssignmentEditor() {
         <hr />
         <Form.Group className="d-flex align-items-center" style={{ paddingLeft: '470px'}}>
           <Button href={`#/Kambaz/Courses/${cid}/Assignments`} variant="light" size="sm">Cancel</Button>
-          <Button href={`#/Kambaz/Courses/${cid}/Assignments`} variant="danger" size="sm">Save</Button>
+          <Button href={`#/Kambaz/Courses/${cid}/Assignments`} variant="danger" size="sm" onClick={save}>Save</Button>
         </Form.Group>
       </Form>
   );}

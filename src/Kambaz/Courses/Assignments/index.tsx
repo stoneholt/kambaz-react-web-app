@@ -6,11 +6,11 @@ import { BsGripVertical } from "react-icons/bs";
 import { LuNotebookPen } from "react-icons/lu";
 import { FaCaretDown } from "react-icons/fa";
 import { useParams } from "react-router";
-import * as db from "../../Database";
+import { useSelector } from "react-redux";
 
 export default function Assignments() {
     const { cid } = useParams();
-    const assignments = db.assignments;
+    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
     return (
       <div id="wd-assignments">
         <AssignmentControls />
@@ -25,7 +25,7 @@ export default function Assignments() {
                   <ListGroup.Item action href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`} className="wd-assignment p-3 ps-1 d-flex align-items-center">
                     <BsGripVertical className="me-2 fs-3" /> <LuNotebookPen style={{ color: "green" }}/> 
                     <div className="flex-grow-1"><b>{assignment.title}</b> <p><span className="text-danger">Multiple Modules</span> | <b>Not available until</b> {assignment.available} | <b>Due</b> {assignment.due} | {assignment.points}pts</p></div>
-                    <AssignmentControlButtons /> 
+                    <AssignmentControlButtons assignmentId={assignment._id} /> 
                   </ListGroup.Item>
               ))}
             </ListGroup>
