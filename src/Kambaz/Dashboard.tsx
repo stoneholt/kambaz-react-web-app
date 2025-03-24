@@ -3,16 +3,34 @@ import { Row, Col, Card, Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form"
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCourse, addCourse, updateCourse } from "./Courses/reducer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addEnrollment, deleteEnrollment } from "./Courses/Enrollments/reducer";
+import * as userClient from "./Account/client";
+
 
 export default function Dashboard() {
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  // const { currentUser } = useSelector((state: any) => state.accountReducer);
   const dispatch = useDispatch();
   const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
-  const { courses } = useSelector((state: any) => state.courseReducer);
+  // const { courses } = useSelector((state: any) => state.courseReducer);
   const [showCourses, setShowCourses] = useState(true);
   const [newCourse, setNewCourse] = useState({_id: "", name: "", description: ""})
+
+  const [courses, setCourses] = useState<any[]>([]);
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const fetchCourses = async () => {
+    try {
+      const courses = await userClient.findMyCourses();
+      setCourses(courses);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchCourses();
+  }, [currentUser]);
+
+
   const update_values = (e: any) => {
     const { field, value } = e.target;
     setNewCourse(prevState => ({
@@ -99,12 +117,12 @@ export default function Dashboard() {
           <Row xs={1} md={5} className="g-4">
             {showCourses ? 
               courses
-                .filter((course: any) =>
-                  enrollments.some(
-                    (enrollment: any) =>
-                      enrollment.user === currentUser._id &&
-                      enrollment.course === course._id
-                    ))        
+                // .filter((course: any) =>
+                //   enrollments.some(
+                //     (enrollment: any) =>
+                //       enrollment.user === currentUser._id &&
+                //       enrollment.course === course._id
+                //     ))        
                 .map((course: any) => (
                 <Col className="wd-dashboard-course" style={{ width: "300px" }}>
                   <Card>
