@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addAssignment, deleteAssignment, updateAssignment, editAssignment, setAssignments } from "./reducer";
 import * as coursesClient from "../client";
 import * as assignmentsClient from "./client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Assignments() {
     const { cid } = useParams();
@@ -20,6 +20,11 @@ export default function Assignments() {
     const fetchAssignments = async () => {
       const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
       dispatch(setAssignments(assignments));
+    };
+
+    const removeAssignment = async (assignmentId: string) => {
+      await assignmentsClient.deleteAssignment(assignmentId);
+      dispatch(deleteAssignment(assignmentId));
     };
 
     useEffect(() => {
@@ -38,7 +43,7 @@ export default function Assignments() {
                   <ListGroup.Item action href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`} className="wd-assignment p-3 ps-1 d-flex align-items-center">
                     <BsGripVertical className="me-2 fs-3" /> <LuNotebookPen style={{ color: "green" }}/> 
                     <div className="flex-grow-1"><b>{assignment.title}</b> <p><span className="text-danger">Multiple Modules</span> | <b>Not available until</b> {assignment.available} | <b>Due</b> {assignment.due} | {assignment.points}pts</p></div>
-                    <AssignmentControlButtons assignmentId={assignment._id} /> 
+                    <AssignmentControlButtons assignmentId={assignment._id} deleteAssignment={(assignmentId) => removeAssignment(assignmentId)} /> 
                   </ListGroup.Item>
               ))}
             </ListGroup>
