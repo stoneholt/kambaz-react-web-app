@@ -3,8 +3,8 @@ import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { addAssignment, updateAssignment } from "./reducer";
-// import * as coursesClient from "../client";
-// import * as assignmentsClient from "./client";
+import * as coursesClient from "../client";
+import * as assignmentsClient from "./client";
 
 export default function AssignmentEditor()  {
     const { cid } = useParams();
@@ -22,24 +22,24 @@ export default function AssignmentEditor()  {
       course: cid,
     });
 
-    // const createAssignmentForCourse = async () => {
-    //   if (!cid) return;
-    //   const newAssignment = assignment;
-    //   const new_assignment = await coursesClient.createAssignmentForCourse(cid, newAssignment);
-    //   dispatch(addAssignment(new_assignment));
-    // };
+    const createAssignmentForCourse = async () => {
+      if (!cid) return;
+      const newAssignment = assignment;
+      const new_assignment = await coursesClient.createAssignmentForCourse(cid, newAssignment);
+      dispatch(addAssignment(new_assignment));
+    };
 
-    // const saveAssignment = async (assignment: any) => {
-    //   await assignmentsClient.updateAssignment(assignment);
-    //   dispatch(updateAssignment(assignment));
-    // };
+    const saveAssignment = async (assignment: any) => {
+      await assignmentsClient.updateAssignment(assignment);
+      dispatch(updateAssignment(assignment));
+    };
 
     const save = () => {
       if (aid === "New") {
-        // createAssignmentForCourse();
+        createAssignmentForCourse();
         dispatch(addAssignment(assignment));
       } else {
-        // saveAssignment(assignment);
+        saveAssignment(assignment);
         dispatch(updateAssignment(assignment));
       }
     }

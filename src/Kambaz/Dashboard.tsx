@@ -2,33 +2,37 @@ import { Link } from "react-router-dom";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form"
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCourse, addCourse, updateCourse } from "./Courses/reducer";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { addEnrollment, deleteEnrollment } from "./Courses/Enrollments/reducer";
 import * as userClient from "./Account/client";
+import * as courseClient from "./Courses/client";
 
 
-export default function Dashboard() {
-  // const { currentUser } = useSelector((state: any) => state.accountReducer);
+export default function Dashboard({ courses, currentUser, setCourses } : {courses: any; currentUser: any; setCourses: any;}) {
   const dispatch = useDispatch();
   const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
-  // const { courses } = useSelector((state: any) => state.courseReducer);
   const [showCourses, setShowCourses] = useState(true);
   const [newCourse, setNewCourse] = useState({_id: "", name: "", description: ""})
 
-  const [courses, setCourses] = useState<any[]>([]);
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const fetchCourses = async () => {
-    try {
-      const courses = await userClient.findMyCourses();
-      setCourses(courses);
-    } catch (error) {
-      console.error(error);
-    }
+  const updateCourse = async () => {
+    await courseClient.updateCourse(newCourse);
+    setCourses(courses.map((c: any) => {
+        if (c._id === newCourse._id) { return newCourse; }
+        else { return c; }
+    })
+  )};
+
+  
+  const deleteCourse = async (courseId: string) => {
+    const status = await courseClient.deleteCourse(courseId);
+    setCourses(courses.filter((newCourse: any) => newCourse._id !== courseId));
   };
-  useEffect(() => {
-    fetchCourses();
-  }, [currentUser]);
+
+  const addNewCourse = async () => {
+    const c_newCourse = await userClient.createCourse(newCourse);
+    setCourses([ ...courses, c_newCourse ]);
+  };
+
 
 
   const update_values = (e: any) => {
@@ -54,12 +58,12 @@ export default function Dashboard() {
                     id="wd-add-new-course-click"
                     onClick={() => {
                       console.log(newCourse);
-                      dispatch(addCourse(newCourse));
+                      addNewCourse();
                       editing("","","");}} > Add </button>
             <button className="btn btn-warning float-end me-2"
                   onClick={() => {
                     console.log(newCourse);
-                    dispatch(updateCourse(newCourse));
+                    updateCourse();
                     }} id="wd-update-course-click">
                     Update </button>
         </h5><br />
@@ -85,7 +89,7 @@ export default function Dashboard() {
                       <Button variant="primary"> Go </Button>
                       <Button onClick={(event) => {
                             event.preventDefault();
-                            dispatch(deleteCourse(course._id));
+                            deleteCourse(course._id);
                           }} className="btn btn-danger float-end"
                           id="wd-delete-course-click">
                           Delete
@@ -116,13 +120,7 @@ export default function Dashboard() {
         <div id="wd-dashboard-courses">
           <Row xs={1} md={5} className="g-4">
             {showCourses ? 
-              courses
-                // .filter((course: any) =>
-                //   enrollments.some(
-                //     (enrollment: any) =>
-                //       enrollment.user === currentUser._id &&
-                //       enrollment.course === course._id
-                //     ))        
+              courses   
                 .map((course: any) => (
                 <Col className="wd-dashboard-course" style={{ width: "300px" }}>
                   <Card>
