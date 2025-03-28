@@ -8,7 +8,7 @@ import * as userClient from "./Account/client";
 import * as courseClient from "./Courses/client";
 
 
-export default function Dashboard({ courses, currentUser, setCourses } : {courses: any; currentUser: any; setCourses: any;}) {
+export default function Dashboard({ courses, currentUser, setCourses, allCourses, setAllCourses } : {courses: any; currentUser: any; setCourses: any; allCourses: any; setAllCourses: any;}) {
   const dispatch = useDispatch();
   const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
   const [showCourses, setShowCourses] = useState(true);
@@ -31,6 +31,7 @@ export default function Dashboard({ courses, currentUser, setCourses } : {course
   const addNewCourse = async () => {
     const c_newCourse = await userClient.createCourse(newCourse);
     setCourses([ ...courses, c_newCourse ]);
+    setAllCourses([ ...courses, c_newCourse ]);
   };
 
 
@@ -138,7 +139,7 @@ export default function Dashboard({ courses, currentUser, setCourses } : {course
                   </Card>
                 </Col>
               )) :
-              courses
+              allCourses
                 .map((course: any) => (
                   <Col className="wd-dashboard-course" style={{ width: "300px" }}>
                     <Card>
