@@ -43,30 +43,22 @@ export default function AssignmentEditor()  {
         dispatch(updateAssignment(assignment));
       }
     }
-
-    const update_values = (e: any) => {
-      const { field, value } = e.target;
-      setAssignment(prevState => ({
-        ...prevState,
-        [field]: value
-      }))
-    }
     
     useEffect(() => {
       if (aid !== "New") {
         const a = assignments.find((a: any) => a._id === aid);
         setAssignment(a);
       }
-    })
+    }, [aid])
     return (
       <Form id="wd-assignments-editor">
         <label htmlFor="wd-name"><h5>Assignment Name</h5></label>
-        <Form.Control style={{ width: 600 }} id="wd-name" className="mb-2" value={assignment.title} onChange={update_values}/>
-        <Form.Control style={{ width: 600, height: 400 }} as="textarea" id="wd-description" defaultValue="The assignment is available online Submit a link to the landing page of your Web application running on Netlify. The landing page should include the following: Your full name and section Links to each of the lab assignments Link to the Kambas application Links to all relevant source code repositories The Kambas application should include a link to navigate back to the landing page" value={assignment?.description} />
+        <Form.Control style={{ width: 600 }} id="wd-name" className="mb-2" value={assignment.title} onChange={(e) => {setAssignment({...assignment, title: e.target.value})}}/>
+        <Form.Control style={{ width: 600, height: 400 }} as="textarea" id="wd-description" defaultValue="The assignment is available online Submit a link to the landing page of your Web application running on Netlify. The landing page should include the following: Your full name and section Links to each of the lab assignments Link to the Kambas application Links to all relevant source code repositories The Kambas application should include a link to navigate back to the landing page" value={assignment?.description} onChange={(e) => {setAssignment({...assignment, description: e.target.value})}} />
         <br/>
         <Form.Group className="d-flex align-items-center">
           <Form.Label className="mr-3" style={{paddingRight: '20px', paddingLeft: '205px' }} htmlFor="wd-points">Points</Form.Label>
-          <Form.Control style={{ width: 300 }} id="wd-points" defaultValue={100} value={assignment?.points} />
+          <Form.Control style={{ width: 300 }} id="wd-points" defaultValue={100} value={assignment?.points} onChange={(e) => {setAssignment({...assignment, points: parseInt(e.target.value)})}} />
         </Form.Group>
         <br/>
         <Form.Group className="d-flex align-items-center">
@@ -112,14 +104,14 @@ export default function AssignmentEditor()  {
               <Form.Control style={{ width: 300 }} id="wd-assign-to" defaultValue="Everyone" />
               <br />
               <Form.Label htmlFor="wd-due-date"><b>Due</b></Form.Label>
-              <Form.Control type="date" style={{ width: 300 }} id="wd-due-date" value={assignment?.due} />
+              <Form.Control type="date" style={{ width: 300 }} id="wd-due-date" value={assignment?.due} onChange={(e) => {setAssignment({...assignment, due: e.target.value})}} />
               <br />
               <Form.Group className="d-flex align-items-center">
                 <Form.Label htmlFor="wd-available-from" style={{ paddingRight: '35px' }}><b>Available From</b></Form.Label>
                 <Form.Label htmlFor="wd-available-until"><b>Until</b></Form.Label>
               </Form.Group>
               <Form.Group className="d-flex align-items-center">
-                <Form.Control type="date" style={{ width: 150 }} id="wd-available-from" defaultValue={assignment?.available} />
+                <Form.Control type="date" style={{ width: 150 }} id="wd-available-from" defaultValue={assignment?.available} onChange={(e) => {setAssignment({...assignment, available: e.target.value})}} />
                 <Form.Control type="date" style={{ width: 150 }} id="wd-available-until" />
               </Form.Group>
             </Form.Group>
