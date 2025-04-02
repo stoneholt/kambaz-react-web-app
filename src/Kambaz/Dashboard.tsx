@@ -25,7 +25,7 @@ export default function Dashboard({ courses, currentUser, setCourses, allCourses
 
   
   const deleteCourse = async (courseId: string) => {
-    const status = await courseClient.deleteCourse(courseId);
+    await courseClient.deleteCourse(courseId);
     setCourses(courses.filter((newCourse: any) => newCourse._id !== courseId));
   };
 

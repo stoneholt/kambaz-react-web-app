@@ -7,10 +7,10 @@ import { LuNotebookPen } from "react-icons/lu";
 import { FaCaretDown } from "react-icons/fa";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
-import { addAssignment, deleteAssignment, updateAssignment, editAssignment, setAssignments } from "./reducer";
+import { deleteAssignment, setAssignments } from "./reducer";
 import * as coursesClient from "../client";
 import * as assignmentsClient from "./client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function Assignments() {
     const { cid } = useParams();
