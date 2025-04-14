@@ -9,7 +9,7 @@ import * as courseClient from "./Courses/client";
 import * as enrollmentsClient from "./Courses/Enrollments/client";
 
 
-export default function Dashboard({ courses, currentUser, setCourses, allCourses, setAllCourses, fetchCourses } : {courses: any; currentUser: any; setCourses: any; allCourses: any; setAllCourses: any; fetchCourses: any;}) {
+export default function Dashboard({ courses, currentUser, setCourses, allCourses, setAllCourses, fetchCourses, enrolling, setEnrolling, updateEnrollment } : {courses: any; currentUser: any; setCourses: any; allCourses: any; setAllCourses: any; fetchCourses: any; enrolling: boolean; setEnrolling: (enrolling: boolean) => void; updateEnrollment: (courseId: string, enrolled: boolean) => void;}) {
   const dispatch = useDispatch();
   const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
   const [showCourses, setShowCourses] = useState(true);
@@ -53,7 +53,7 @@ export default function Dashboard({ courses, currentUser, setCourses, allCourses
   }
 
   const fetchEnrollments = async () => {
-    const e_enrollments = await userClient.findMyEnrollments();
+    const e_enrollments = await userClient.findCoursesForUser(currentUser._id);
     dispatch(setEnrollments(e_enrollments));
   };
 
@@ -141,11 +141,14 @@ export default function Dashboard({ courses, currentUser, setCourses, allCourses
     return (
       <div id="wd-dashboard">
         <h1 id="wd-dashboard-title">Dashboard</h1> <hr /><br />
-        <Button style={{color: "blue"}} onClick={() => setShowCourses(!showCourses)}>Enrollments</Button>
+        {/* <Button style={{color: "blue"}} onClick={() => setShowCourses(!showCourses)}>Enrollments</Button> */}
+        <button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary" >
+          {enrolling ? "My Courses" : "All Courses"}
+        </button>
         <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr />
         <div id="wd-dashboard-courses">
           <Row xs={1} md={5} className="g-4">
-            {showCourses ? 
+            {enrolling ? 
               courses   
                 .map((course: any) => (
                 <Col className="wd-dashboard-course" style={{ width: "300px" }}>
