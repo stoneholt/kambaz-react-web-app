@@ -36,12 +36,6 @@ export default function PeopleDetails() {
     <div className="wd-people-details position-fixed top-0 end-0 bottom-0 bg-white p-4 shadow w-25">
         <div className="text-danger fs-4">
             {!editing && (
-            <FaPencil onClick={() => setEditing(true)}
-                className="float-end fs-5 mt-2 wd-edit" /> )}
-            {editing && (
-            <FaCheck onClick={() => saveUser()}
-                className="float-end fs-5 mt-2 me-2 wd-save" /> )}
-            {!editing && (
             <div className="wd-name"
                 onClick={() => setEditing(true)}>
                 {user.firstName} {user.lastName}</div>)}
@@ -55,6 +49,14 @@ export default function PeopleDetails() {
         <button onClick={() => navigate(-1)} className="btn position-fixed end-0 top-0 wd-close-details">
         <IoCloseSharp className="fs-1" /> </button>
         <div className="text-center mt-2"> <FaUserCircle className="text-secondary me-2 fs-1" /> </div><hr />
+        <div className="text-danger fs-4">
+          {!editing && (
+              <FaPencil onClick={() => setEditing(true)}
+                  className="float-end fs-5 mt-2 wd-edit" /> )}
+          {editing && (
+              <FaCheck onClick={() => saveUser()}
+                  className="float-end fs-5 mt-2 me-2 wd-save" /> )}
+        </div>
         <div className="text-danger fs-4 wd-name"> {user.firstName} {user.lastName} </div>
         <b>Roles:</b>           <span className="wd-roles">         {user.role}         </span> <br />
         <b>Login ID:</b>        <span className="wd-login-id">      {user.loginId}      </span> <br />
