@@ -8,20 +8,16 @@ import "./styles.css";
 import ProtectedRoute from "./Account/ProtectedRoute";
 import Session from "./Account/Session";
 import * as userClient from "./Account/client";
-import * as courseClient from "./Courses/client"
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function Kambaz() {
   const [courses, setCourses] = useState<any[]>([]);
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const [allCourses, setAllCourses] = useState<any[]>([]);
   const fetchCourses = async () => {
     try {
       const courses = await userClient.findMyCourses();
       setCourses(courses);
-      const allCourses = await courseClient.fetchAllCourses();
-      setAllCourses(allCourses);
     } catch (error) {
       console.error(error);
     }
@@ -38,7 +34,7 @@ export default function Kambaz() {
             <Routes>
               <Route path="/" element={<Navigate to="Account" />} />
               <Route path="/Account/*" element={<Account />} />
-              <Route path="/Dashboard" element={<ProtectedRoute> <Dashboard courses={courses} currentUser={currentUser} setCourses={setCourses} setAllCourses={setAllCourses} /> </ProtectedRoute> } />
+              <Route path="/Dashboard" element={<ProtectedRoute> <Dashboard courses={courses} currentUser={currentUser} setCourses={setCourses} /> </ProtectedRoute> } />
               <Route path="/Courses/:cid/*" element={<ProtectedRoute><Courses /></ProtectedRoute> } />
               <Route path="/Calendar" element={<h1>Calendar</h1>} />
               <Route path="/Inbox" element={<h1>Inbox</h1>} />

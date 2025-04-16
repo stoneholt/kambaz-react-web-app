@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import * as userClient from "./Account/client";
 import * as courseClient from "./Courses/client";
 
-export default function Dashboard({ courses, currentUser, setCourses, setAllCourses } : {courses: any; currentUser: any; setCourses: any; setAllCourses: any;}) {
+export default function Dashboard({ courses, currentUser, setCourses } : {courses: any; currentUser: any; setCourses: any;}) {
   const [newCourse, setNewCourse] = useState({_id: "", name: "", number: "", startDate: "", endDate: "", department: "", credits: 0, description: "", author: currentUser._id})
   const [enrolling, setEnrolling] = useState<boolean>(false);
 
@@ -57,14 +57,7 @@ export default function Dashboard({ courses, currentUser, setCourses, setAllCour
     setCourses(courses.filter((course: any) => course._id !== courseId));
   };
 
-  // const addNewCourse = async () => {
-  //   const c_newCourse = await userClient.createCourse(newCourse);
-  //   setCourses([ ...courses, c_newCourse ]);
-  //   // setAllCourses([ ...courses, c_newCourse ]);
-  // };
-
   const addNewCourse = async () => {
-    // const newCourse = await userClient.createCourse(course);
     const c_newCourse = await courseClient.createCourse(newCourse);
     setCourses([...courses, c_newCourse]);
   };
@@ -136,7 +129,7 @@ export default function Dashboard({ courses, currentUser, setCourses, setAllCour
         <div id="wd-dashboard-courses">
           <Row xs={1} md={5} className="g-4">
             {courses
-              .map((course: any) => ( !course === null &&
+              .map((course: any) => (
               <Col className="wd-dashboard-course" style={{ width: "300px" }}>
                 <Card>
                   <Link to={`/Kambaz/Courses/${course._id}/Home`}
